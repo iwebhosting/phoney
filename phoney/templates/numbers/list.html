@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% from "_utils.html" import render_pagination %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+    {% set page = request.args.get('page', '1')|int %}
+    {% set per_page = request.args.get('pp', '50')|int %}
+
+    {% set paginator = numbers.paginate(page, per_page) %}
+
+    <div class="row-fluid">
+        <div class="span12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Number</th>
+                        <th>Name</th>
+                        <th>Last Call</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for number in paginator.items %}
+                        <form action="{{ url_for('.update', number=number.number) }}" method="POST">
+                        <tr>
+                            <td><a href="{{ url_for('.detail', number=number.number) }}">{{ number.id }}</a>
+                            <td>{{ number.number }}</td>
+                            <td><input name="name" value="{{ number.name }}"/></td>
+                            <td>{{ number.called }}</td>
+                        </tr>
+                        </form>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{ render_pagination(paginator, request.endpoint, request.args or {}) }}
+
+{% endblock content %}

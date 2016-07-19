@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{% block title %}Phoney{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon" />
+        <link rel="stylesheet" href="{{ url_for('static', filename="bootstrap/css/bootstrap.min.css") }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename="bootstrap/css/bootstrap-responsive.min.css") }}">
+        <script src="{{ url_for('static', filename="js/jquery.min.js") }}"></script>
+        <script src="{{ url_for('static', filename="bootstrap/js/bootstrap.min.js") }}"></script>
+        <meta name="google" value="notranslate">
+        {% block extrahead %}{% endblock extrahead %}
+    </head>
+    <body>
+        <div class="container">
+            <div class="pagehead">
+                <h3 class="muted">Phoney</h3>
+            </div>
+            <div id="flashes">
+                {% block flashes %}
+                    {% for category, message in get_flashed_messages(with_categories=true) %}
+                        <div class="alert {{ category and 'alert-' + category or '' }}">
+                            <a class="close" data-dismiss="alert">&times;</a>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endblock flashes %}
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    {% block content %}{% endblock content %}
+                </div>
+            </div>
+        </div>
+    </body>
+    {% block extrajs %}{% endblock extrajs %}
+</html>
