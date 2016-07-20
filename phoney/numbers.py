@@ -42,7 +42,7 @@ def called(number):
     to_, _ = Number.get_or_create(number=number)
     from_, _ = Number.get_or_create(number=request.form['from'])
     if from_.name == 'Unknown':
-        from_.name = from_.number
+        from_.name = '0' + from_.number
     from_.called = datetime.utcnow()
     from_.save()
     return from_.name

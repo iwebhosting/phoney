@@ -24,7 +24,7 @@
                         <form action="{{ url_for('.update', number=number.number) }}" method="POST">
                         <tr>
                             <td><a href="{{ url_for('.detail', number=number.number) }}">{{ number.id }}</a>
-                            <td>{{ number.number }}</td>
+                            <td>0{{ number.number }}</td>
                             <td><input name="name" value="{{ number.name }}"/></td>
                             <td>{{ number.called }}</td>
                         </tr>
