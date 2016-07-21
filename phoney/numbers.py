@@ -3,6 +3,8 @@ from .models import Number
 from datetime import datetime
 from sqlalchemy.sql import func
 import sqlalchemy.orm.exc as orm_exc
+import socket
+import json
 
 numbers = Blueprint('numbers', __name__)
 
@@ -12,6 +14,26 @@ def index():
     w = Number.query.filter(func.length(Number.number) > 6
                             ).order_by(Number.called.desc())
     return render_template('numbers/list.html', numbers=w)
+
+
+@numbers.route('/h/<number>', methods=['GET'])
+def hosting(number):
+    w = None
+    try:
+        w = Number.query.filter_by(number=number).one()
+    except orm_exc.NoResultFound:
+        pass
+    name = w.name if w and (w.name != number) else name
+    postdata = {
+        'name': 'Phonecall',
+        'status': 0,
+        'type': 'metric',
+        'output': 'Call from %s (0%s)' % (name, number),
+        'handlers': ['notify_ops'],
+    }
+    s = socket.create_connection(('127.0.0.1', 3030))
+    s.send(json.dumps(postdata))
+    s.close()
 
 
 @numbers.route('/n/<number>', methods=['GET'])
